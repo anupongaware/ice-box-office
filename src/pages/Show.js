@@ -1,26 +1,94 @@
-import React, {useEffect, useState} from 'react'
-import { useParams } from 'react-router'
-import {apiGet} from '../misc/config'
+import React, { useEffect, useReducer } from 'react';
+import { useParams } from 'react-router';
+import Cast from '../components/show/Cast';
+import Details from '../components/show/Details';
+import ShowMainData from '../components/show/ShowMainData';
+import { apiGet } from '../misc/config';
+import { InfoBlock, ShowPageWrapper } from './Show.styled';
+
+const reducer = (prevState, action) => {
+  switch (action.type) {
+    case 'FETCH_SUCCESS': {
+      return { isLoading: false, error: null, show: action.show };
+    }
+
+    case 'FETCH_FAILED': {
+      return { ...prevState, isLoading: false, error: action.error };
+    }
+    default:
+      return prevState;
+  }
+};
+
+const initialState = {
+  show: null,
+  isLoading: true,
+  error: null,
+};
 
 const Show = () => {
+  const { id } = useParams();
+  
+  const [{ show, isLoading, error }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
-    const { id } = useParams();
-    const [show, setShow] =useState(null);
+  useEffect(() => {
+    let isMounted = true;
 
-    useEffect(()=>{
-        apiGet(`/shows/${id}?embed[]=episodes&embed[]=cast`).then(results => {
-            setShow(results)
-        })
-    },[id])
+    apiGet(`/shows/${id}?embed[]=episodes&embed[]=cast`)
+      .then(results => {
+        if (isMounted) {
+          dispatch({ type: 'FETCH_SUCCESS', show: results });
+        }
+      })
+      .catch(err => {
+        if (isMounted) {
+          dispatch({ type: 'FETCH_FAILED', error: err.message });
+        }
+      });
 
-    console.log('show', show)
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
-    return (
+  console.log('show1', show);
 
-        <div>
-            This is show page
-        </div>
-    )
-}
+  if (isLoading) {
+    return <div>Data is being loaded</div>;
+  }
 
-export default Show
+  if (error) {
+    return <div>Error occured: {error}</div>;
+  }
+
+  return (
+    <ShowPageWrapper>
+      <ShowMainData
+        image={show.image}
+        name={show.name}
+        rating={show.rating}
+        summary={show.summary}
+        tags={show.genres}
+      />
+
+      <InfoBlock>
+        <h2>Details</h2>
+        <Details
+          status={show.status}
+          network={show.network}
+          premiered={show.premiered}
+        />
+      </InfoBlock>
+
+      <InfoBlock>
+        <h2>Cast</h2>
+        <Cast cast={show._embedded.cast}/>
+      </InfoBlock>
+    </ShowPageWrapper>
+  );
+};
+
+export default Show;
