@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/ice-box-office/static/css/main.eb3c23e6.chunk.css",
+    "main.js": "/ice-box-office/static/js/main.ac0de9b5.chunk.js",
+    "main.js.map": "/ice-box-office/static/js/main.ac0de9b5.chunk.js.map",
+    "runtime-main.js": "/ice-box-office/static/js/runtime-main.6a90b6fb.js",
+    "runtime-main.js.map": "/ice-box-office/static/js/runtime-main.6a90b6fb.js.map",
+    "static/js/2.52d01505.chunk.js": "/ice-box-office/static/js/2.52d01505.chunk.js",
+    "static/js/2.52d01505.chunk.js.map": "/ice-box-office/static/js/2.52d01505.chunk.js.map",
+    "index.html": "/ice-box-office/index.html",
+    "static/css/main.eb3c23e6.chunk.css.map": "/ice-box-office/static/css/main.eb3c23e6.chunk.css.map",
+    "static/js/2.52d01505.chunk.js.LICENSE.txt": "/ice-box-office/static/js/2.52d01505.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6a90b6fb.js",
+    "static/js/2.52d01505.chunk.js",
+    "static/css/main.eb3c23e6.chunk.css",
+    "static/js/main.ac0de9b5.chunk.js"
+  ]
+}
